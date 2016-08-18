@@ -3,5 +3,7 @@
 1. Install Node: https://nodejs.org/en/download/ (With NPM)
 
 # Simple Template Replacement Instructions: 
-1. Go to the /Source directory
-2. Execute: "node index.js"
+1. Put Template input.docx in /Templates/ directory
+2. Go to the /Source directory
+3. Execute: "swagger project start"
+4. Execute: "curl http://localhost:10010/convert?name=Whatever"
