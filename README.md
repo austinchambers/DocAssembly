@@ -1,6 +1,7 @@
 # Intapp Express: Setup Instructions
 #
 1. Install Node: https://nodejs.org/en/download/ (With NPM)
+2. Install needed packages by going to "/Source" and executing "npm install"
 
 # Simple Template Replacement Instructions: 
 1. Put Template input.docx in /Templates/ directory
