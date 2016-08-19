@@ -26,10 +26,10 @@ paths:
       # used as the method name of the controller
       operationId: convert
       parameters:
-        - name: name
+        - name: replacementJson
           in: query
-          description: Converts the document.
-          required: false
+          description: Replacement pairs to convert
+          required: true
           type: string
       responses:
         "200":

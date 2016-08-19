@@ -38,7 +38,9 @@ module.exports = {
  */
 function convert(req, res) {
   // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
-  var name = req.swagger.params.name.value || 'stranger';
+  //var name = req.swagger.params.name.value;
+  var replacementJson = req.swagger.params.replacementJson.value;
+  var jsonValue = JSON.parse(replacementJson);
   var result = util.format('Converting...', __dirname+"/../../../Templates/input.docx");
 
 
@@ -47,10 +49,7 @@ function convert(req, res) {
 
   var doc=new Docxtemplater(content);
 
-  doc.setData({
-      "firstname":"John",
-      "lastname":"Doe"
-  });
+  doc.setData(jsonValue);
 
   doc.render();
 
