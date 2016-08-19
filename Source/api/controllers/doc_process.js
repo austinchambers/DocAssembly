@@ -31,7 +31,8 @@ var mime = require('mime');
  */
 module.exports = {
   convert: convert,
-  download: download
+  download: download,
+  convertToFile: convertToFile
 };
 
 /*
@@ -78,5 +79,32 @@ function download(req, res) {
   res.setHeader('Content-type', mimetype);
 
   var filestream = fs.createReadStream(file);
+  filestream.pipe(res);
+}
+
+function convertToFile(req, res) {
+  // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
+  var templateName = req.swagger.params.templateName.value;
+  var replacementJson = req.swagger.params.replacementJson.value;
+  var jsonValue = JSON.parse(replacementJson);
+
+  var content = fs
+      .readFileSync(__dirname+"/../../../Templates/" + templateName,"binary");
+  var doc=new Docxtemplater(content);
+  doc.setData(jsonValue);
+  doc.render();
+  var buf = doc.getZip()
+               .generate({type:"nodebuffer"});
+
+  var outputFile = __dirname+"/../../../Output/" + templateName;
+  fs.writeFileSync(outputFile,buf);  
+      
+  var filename = path.basename(outputFile);
+  var mimetype = mime.lookup(outputFile);
+
+  res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+  res.setHeader('Content-type', mimetype);
+
+  var filestream = fs.createReadStream(outputFile);
   filestream.pipe(res);
 }
