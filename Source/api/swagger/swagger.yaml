@@ -48,6 +48,34 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /convert_bulk:
+    x-swagger-router-controller: doc_process
+    post: 
+      description: Converts the document in /Templates/ folder to the /Output folder
+      # used as the method name of the controller
+      operationId: convert_bulk
+      parameters:
+        - name: templateName
+          in: query
+          description: The name of the template document (e.g., "AML Cert - IntApp.docx")
+          required: true
+          type: string
+        - name: replacementJson
+          in: formData
+          description: Replacement pairs in the template document to convert. (e.g., {"firstname":"Joe", "lastname":"Smith"})
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/DocConvertResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /download:
     # binds a127 app logic to a route
     x-swagger-router-controller: doc_process

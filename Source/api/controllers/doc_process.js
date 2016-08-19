@@ -32,7 +32,8 @@ var mime = require('mime');
 module.exports = {
   convert: convert,
   download: download,
-  convertToFile: convertToFile
+  convertToFile: convertToFile,
+  convert_bulk: convert_bulk
 };
 
 /*
@@ -45,6 +46,32 @@ function convert(req, res) {
   // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
   var templateName = req.swagger.params.templateName.value;
   var replacementJson = req.swagger.params.replacementJson.value;
+  var jsonValue = JSON.parse(replacementJson);
+  var result = util.format('Converting...', __dirname+"/../../../Templates/" + templateName);
+
+
+  var content = fs
+      .readFileSync(__dirname+"/../../../Templates/" + templateName,"binary");
+
+  var doc=new Docxtemplater(content);
+
+  doc.setData(jsonValue);
+
+  doc.render();
+
+  var buf = doc.getZip()
+               .generate({type:"nodebuffer"});
+
+  fs.writeFileSync(__dirname+"/../../../Output/" + templateName,buf);  
+      
+  res.json(result);
+}
+
+function convert_bulk(req, res) {
+  // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
+  var templateName = req.swagger.params.templateName.value;
+  var replacementJson = req.swagger.params.replacementJson.value;
+  console.log(replacementJson);
   var jsonValue = JSON.parse(replacementJson);
   var result = util.format('Converting...', __dirname+"/../../../Templates/" + templateName);
 
