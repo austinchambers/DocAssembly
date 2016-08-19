@@ -71,7 +71,6 @@ function convert_bulk(req, res) {
   // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
   var templateName = req.swagger.params.templateName.value;
   var replacementJson = req.swagger.params.replacementJson.value;
-  console.log(replacementJson);
   var jsonValue = JSON.parse(replacementJson);
   var result = util.format('Converting...', __dirname+"/../../../Templates/" + templateName);
 
