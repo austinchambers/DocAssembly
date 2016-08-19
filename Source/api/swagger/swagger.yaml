@@ -31,6 +31,11 @@ paths:
           description: Replacement pairs to convert
           required: true
           type: string
+        - name: templateName
+          in: query
+          description: Replacement pairs to convert
+          required: true
+          type: string
       responses:
         "200":
           description: Success
