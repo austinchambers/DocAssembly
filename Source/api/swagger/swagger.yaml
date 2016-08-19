@@ -17,6 +17,7 @@ consumes:
 # format of the responses to the client (Accepts)
 produces:
   - application/json
+  - application/vnd.openxmlformats-officedocument.wordprocessingml.document
 paths:
   /convert:
     # binds a127 app logic to a route
