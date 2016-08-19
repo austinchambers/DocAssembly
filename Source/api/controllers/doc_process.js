@@ -13,6 +13,9 @@
 var util = require('util');
 var fs=require('fs');
 var Docxtemplater = require('docxtemplater');
+var http = require('http');
+var path = require('path');
+var mime = require('mime');
 
 /*
  Once you 'require' a module you can reference the things that it exports.  These are defined in module.exports.
@@ -27,7 +30,8 @@ var Docxtemplater = require('docxtemplater');
   we specify that in the exports of this module that 'hello' maps to the function named 'hello'
  */
 module.exports = {
-  convert: convert
+  convert: convert,
+  download: download
 };
 
 /*
@@ -41,7 +45,7 @@ function convert(req, res) {
   var templateName = req.swagger.params.templateName.value;
   var replacementJson = req.swagger.params.replacementJson.value;
   var jsonValue = JSON.parse(replacementJson);
-  var result = util.format('Converting...', __dirname+"/../../../Templates/input.docx");
+  var result = util.format('Converting...', __dirname+"/../../../Templates/" + templateName);
 
 
   var content = fs
@@ -59,4 +63,20 @@ function convert(req, res) {
   fs.writeFileSync(__dirname+"/../../../Output/" + templateName,buf);  
       
   res.json(result);
+}
+
+function download(req, res) {
+  // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
+  var templateName = req.swagger.params.documentName.value;
+  var file = __dirname+"/../../../Output/" + templateName;
+  var result = util.format('Downloading...', file);
+  
+  var filename = path.basename(file);
+  var mimetype = mime.lookup(file);
+
+  res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+  res.setHeader('Content-type', mimetype);
+
+  var filestream = fs.createReadStream(file);
+  filestream.pipe(res);
 }

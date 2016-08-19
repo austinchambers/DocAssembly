@@ -47,6 +47,30 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /download:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: doc_process
+    get:
+      description: Downloads the document in the /Output/ folder
+      # used as the method name of the controller
+      operationId: download
+      parameters:
+        - name: documentName
+          in: query
+          description: The name of the converted document (e.g., "AML Cert - IntApp.docx")
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/DocConvertResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions

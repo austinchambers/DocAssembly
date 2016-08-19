@@ -8,4 +8,4 @@
 1. Put Template input.docx in /Templates/ directory
 2. Go to the /Source directory
 3. Execute: "swagger project start"
-4. Execute: "curl http://localhost:10010/convert?name=Whatever"
+4. Execute: "curl -X GET -G http://127.0.0.1:10010/convert -d replacementJson={%22firstname%22:%22Joe%22,%22lastname%22:%22Smith%22} -d templateName=input.docx"
